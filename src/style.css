@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+    --color-primary: oklch(46.507% 0.18554 314.5);
+    --color-primary-50: oklch(94.011% 0.0321 328.96);
+    --color-primary-100: oklch(88.834% 0.06358 327.76);
+    --color-primary-200: oklch(78.474% 0.12613 325.3);
+    --color-primary-300: oklch(67.936% 0.18068 322.66);
+    --color-primary-400: oklch(57.669% 0.22389 318.72);
+    --color-primary-500: oklch(46.507% 0.18554 314.5);
+    --color-primary-600: oklch(39.581% 0.15594 310.18);
+    --color-primary-700: oklch(32.64% 0.12642 306.18);
+    --color-primary-800: oklch(26.051% 0.09591 301.23);
+    --color-primary-900: oklch(19.522% 0.0654 297.63);
+}
+
+:root {
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: light dark;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#app {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+
+@layer components {
+    .btn {
+        @apply bg-primary-400 select-none hover:bg-primary-400/80 inline-flex h-10 items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap text-white transition-colors disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0;
+    }
+
+    .btn-border {
+        @apply hover:bg-primary-400/10 hover:border-primary-400/20 border-1 border-gray-200 bg-transparent text-gray-900;
+    }
+
+    .input {
+        @apply focus:ring-primary-400/20 focus:border-primary-400 w-full rounded-lg border text-sm border-gray-300 dark:border-neutral-600 px-2 py-1 focus:ring-2 focus:outline-none;
+    }
+}
