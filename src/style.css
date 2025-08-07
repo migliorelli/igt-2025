@@ -47,7 +47,7 @@ body {
     }
 
     .btn-border {
-        @apply hover:bg-primary-400/10 hover:border-primary-400/20 border-1 border-gray-200 bg-transparent text-gray-900;
+        @apply hover:bg-primary-400/10 dark:hover:bg-primary-300/20 hover:border-primary-400/20 dark:hover:border-primary-200/50 border-1 border-gray-200 bg-transparent dark:border-neutral-600 dark:text-neutral-200 text-gray-900;
     }
 
     .input {
