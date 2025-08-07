@@ -46,7 +46,10 @@ const useCadastroStore = defineStore("cadastro", {
             }
         },
 
-        async cadastrar() {},
+        async cadastrar() {
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+            return "teve um erro ai";
+        },
     },
 });
 

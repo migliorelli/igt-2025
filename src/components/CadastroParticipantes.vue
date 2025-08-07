@@ -18,6 +18,7 @@
                         type="button"
                         class="btn btn-border px-2 h-8"
                         @click="removerParticipante(index)"
+                        :disabled="loading"
                     >
                         Remover
                     </button>
@@ -36,6 +37,7 @@
                                     (e.target as HTMLInputElement).value || '')
                         "
                         placeholder="Asdrubal Soares Ribeiro"
+                        :disabled="loading"
                     />
                 </Controller>
 
@@ -53,6 +55,7 @@
                                     (e.target as HTMLInputElement).value || '')
                         "
                         placeholder="27 99123456789"
+                        :disabled="loading"
                     />
                 </Controller>
 
@@ -67,6 +70,7 @@
                                     (e.target as HTMLSelectElement).value || '')
                         "
                         required
+                        :disabled="loading"
                     >
                         <option value="" disabled>Selecionar</option>
                         <option value="0">M01</option>
@@ -81,15 +85,23 @@
             class="btn btn-border w-full"
             type="button"
             @click="adicionarParticipante"
+            :disabled="loading"
         >
             Adicionar participante
         </button>
 
         <div class="flex w-full gap-2">
-            <button type="button" class="btn w-full flex-1" @click="anterior">
+            <button
+                type="button"
+                class="btn w-full flex-1"
+                @click="anterior"
+                :disabled="loading"
+            >
                 Voltar
             </button>
-            <button type="submit" class="btn w-full flex-2">Enviar</button>
+            <button type="submit" class="btn w-full flex-2" :disabled="loading">
+                {{ loading ? "Carregando..." : "Enviar" }}
+            </button>
         </div>
         <div v-if="erro" class="text-center text-rose-500 text-sm">
             {{ erro }}
@@ -104,6 +116,7 @@ import Controller from "./Controller.vue";
 
 interface Emits {
     (e: "anterior"): void;
+    (e: "prox"): void;
 }
 
 const emit = defineEmits<Emits>();
@@ -119,6 +132,7 @@ const adicionarParticipante = () => {
     cadastro.adicionarParticipante();
 };
 
+const loading = ref(false);
 const erro = ref<string | null>(null);
 
 const anterior = () => {
@@ -130,7 +144,7 @@ const validarTelefone = (numero: string): boolean => {
     return apenasDigitos.length === 11;
 };
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
     erro.value = null;
     participantes.value.forEach((p) => {
         p.erroTelefone = false;
@@ -159,6 +173,20 @@ const handleSubmit = () => {
         return;
     }
 
-    console.log("Form submitted");
+    loading.value = true;
+
+    try {
+        const erroCadastro = await cadastro.cadastrar();
+        if (erroCadastro) {
+            erro.value = erroCadastro;
+            return;
+        }
+
+        emit("prox");
+    } catch (error) {
+        erro.value = "Erro ao enviar os participantes. Tente novamente.";
+    } finally {
+        loading.value = false;
+    }
 };
 </script>

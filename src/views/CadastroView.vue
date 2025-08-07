@@ -3,7 +3,12 @@
         <Container class="flex flex-col gap-6 items-center">
             <Logo />
             <CadastroApresentacao v-if="fase === 0" @prox="prox" />
-            <CadastroParticipantes v-if="fase === 1" @anterior="anterior" />
+            <CadastroParticipantes
+                v-if="fase === 1"
+                @anterior="anterior"
+                @prox="prox"
+            />
+            <CadastroSucesso v-if="fase === 2" />
         </Container>
     </Base>
 </template>
@@ -13,6 +18,7 @@ import { ref } from "vue";
 import Base from "../components/Base.vue";
 import CadastroApresentacao from "../components/CadastroApresentacao.vue";
 import CadastroParticipantes from "../components/CadastroParticipantes.vue";
+import CadastroSucesso from "../components/CadastroSucesso.vue";
 import Container from "../components/Container.vue";
 import Logo from "../components/Logo.vue";
 
@@ -23,6 +29,6 @@ const anterior = () => {
 };
 
 const prox = () => {
-    if (fase.value === 0) fase.value++;
+    if (fase.value < 2) fase.value++;
 };
 </script>
