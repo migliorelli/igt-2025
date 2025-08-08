@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import http from "../lib/http.ts";
 
 interface Participante {
     nome: string;
@@ -8,12 +9,38 @@ interface Participante {
     erroNome: boolean;
 }
 
+interface Curso {
+    cod: number;
+    nome: string;
+}
+
+interface Turma {
+    cod: number;
+    cod_curso: number;
+    curso: Curso;
+    ano: number;
+    nome: string;
+}
+
+interface Modalidade {
+    cod: number;
+    nome: string;
+}
+
 const initialState = {
+    turmas: [] as Turma[],
+    modalidades: [] as Modalidade[],
+    carregando: true,
+    carregandoEnvio: false,
+    erro: null as string | null,
+    erroEnvio: null as string | null,
     apresentacao: {
         nome: "",
         descricao: "",
         modalidade: "",
         anexo: "",
+        erroNome: false,
+        erroDescricao: false,
     },
     participantes: [
         {
@@ -46,9 +73,50 @@ const useCadastroStore = defineStore("cadastro", {
             }
         },
 
-        async cadastrar() {
-            await new Promise((resolve) => setTimeout(resolve, 2000));
-            return "teve um erro ai";
+        async enviar() {
+            this.carregandoEnvio = true;
+            this.erroEnvio = null;
+
+            try {
+                await http.post("/grupo", {
+                    descricao: this.apresentacao.descricao,
+                    nome: this.apresentacao.nome,
+                    anexos: this.apresentacao.anexo,
+                    modalidade: Number(this.apresentacao.modalidade),
+                    candidatos: this.participantes.map((p) => ({
+                        nome: p.nome,
+                        telefone: p.telefone,
+                        turma: Number(p.turma),
+                    })),
+                });
+            } catch (error) {
+                this.erro = (error as Error).message;
+                return false;
+            } finally {
+                this.carregandoEnvio = false;
+            }
+
+            return true;
+        },
+        async carregarDados() {
+            this.carregando = true;
+            this.erro = null;
+
+            try {
+                const [resTurmas, resModalidades] = await Promise.all([
+                    http.get("/turma"),
+                    http.get("/modalidade"),
+                ]);
+
+                this.turmas = resTurmas.data;
+                this.modalidades = resModalidades.data;
+            } catch (error) {
+                this.erro =
+                    "Não foi possível carregar os dados: " +
+                    (error as Error).message;
+            } finally {
+                this.carregando = false;
+            }
         },
     },
 });

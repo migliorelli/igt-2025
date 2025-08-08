@@ -18,7 +18,7 @@
                         type="button"
                         class="btn btn-border px-2 h-8"
                         @click="removerParticipante(index)"
-                        :disabled="loading"
+                        :disabled="cadastro.carregandoEnvio"
                     >
                         Remover
                     </button>
@@ -37,7 +37,7 @@
                                     (e.target as HTMLInputElement).value || '')
                         "
                         placeholder="Asdrubal Soares Ribeiro"
-                        :disabled="loading"
+                        :disabled="cadastro.carregandoEnvio"
                     />
                 </Controller>
 
@@ -55,7 +55,7 @@
                                     (e.target as HTMLInputElement).value || '')
                         "
                         placeholder="27 99123456789"
-                        :disabled="loading"
+                        :disabled="cadastro.carregandoEnvio"
                     />
                 </Controller>
 
@@ -70,12 +70,16 @@
                                     (e.target as HTMLSelectElement).value || '')
                         "
                         required
-                        :disabled="loading"
+                        :disabled="cadastro.carregandoEnvio"
                     >
                         <option value="" disabled>Selecionar</option>
-                        <option value="0">M01</option>
-                        <option value="1">M02</option>
-                        <option value="2">M03</option>
+                        <option
+                            v-for="turma in turmas"
+                            :key="turma.cod"
+                            :value="turma.cod"
+                        >
+                            {{ turma.nome }}
+                        </option>
                     </select>
                 </Controller>
             </div>
@@ -85,7 +89,7 @@
             class="btn btn-border w-full"
             type="button"
             @click="adicionarParticipante"
-            :disabled="loading"
+            :disabled="cadastro.carregandoEnvio"
         >
             Adicionar participante
         </button>
@@ -95,22 +99,29 @@
                 type="button"
                 class="btn w-full flex-1"
                 @click="anterior"
-                :disabled="loading"
+                :disabled="cadastro.carregandoEnvio"
             >
                 Voltar
             </button>
-            <button type="submit" class="btn w-full flex-2" :disabled="loading">
-                {{ loading ? "Carregando..." : "Enviar" }}
+            <button
+                type="submit"
+                class="btn w-full flex-2"
+                :disabled="cadastro.carregandoEnvio"
+            >
+                {{ cadastro.carregandoEnvio ? "Carregando..." : "Enviar" }}
             </button>
         </div>
-        <div v-if="erro" class="text-center text-rose-500 text-sm">
-            {{ erro }}
+        <div
+            v-if="cadastro.erroEnvio"
+            class="text-center text-rose-500 text-sm"
+        >
+            {{ cadastro.erroEnvio }}
         </div>
     </form>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import useCadastroStore from "../store/cadastro-store.ts";
 import Controller from "./Controller.vue";
 
@@ -123,6 +134,7 @@ const emit = defineEmits<Emits>();
 
 const cadastro = useCadastroStore();
 const participantes = computed(() => cadastro.participantes);
+const turmas = computed(() => cadastro.turmas);
 
 const removerParticipante = (index: number) => {
     cadastro.removerParticipante(index);
@@ -131,9 +143,6 @@ const removerParticipante = (index: number) => {
 const adicionarParticipante = () => {
     cadastro.adicionarParticipante();
 };
-
-const loading = ref(false);
-const erro = ref<string | null>(null);
 
 const anterior = () => {
     emit("anterior");
@@ -144,8 +153,7 @@ const validarTelefone = (numero: string): boolean => {
     return apenasDigitos.length === 11;
 };
 
-const handleSubmit = async () => {
-    erro.value = null;
+const validar = () => {
     participantes.value.forEach((p) => {
         p.erroTelefone = false;
         p.erroNome = false;
@@ -157,9 +165,9 @@ const handleSubmit = async () => {
 
     if (nomeErrado) {
         nomeErrado.erroNome = true;
-        erro.value =
+        cadastro.erroEnvio =
             "Nome inválido. Deve conter pelo menos 3 caracteres e 2 nomes.";
-        return;
+        return true;
     }
 
     const telefoneErrado = participantes.value.find(
@@ -168,25 +176,18 @@ const handleSubmit = async () => {
 
     if (telefoneErrado) {
         telefoneErrado.erroTelefone = true;
-        erro.value =
+        cadastro.erroEnvio =
             "Número de telefone inválido. Deve seguir o formato 27 99123456789.";
-        return;
+        return true;
     }
 
-    loading.value = true;
+    return false;
+};
 
-    try {
-        const erroCadastro = await cadastro.cadastrar();
-        if (erroCadastro) {
-            erro.value = erroCadastro;
-            return;
-        }
+const handleSubmit = async () => {
+    const erro = validar();
+    if (erro) return;
 
-        emit("prox");
-    } catch (error) {
-        erro.value = "Erro ao enviar os participantes. Tente novamente.";
-    } finally {
-        loading.value = false;
-    }
+    await cadastro.enviar();
 };
 </script>

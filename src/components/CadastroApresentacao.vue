@@ -11,6 +11,7 @@
                 class="input"
                 required
                 placeholder="Dança da música X"
+                :class="cadastro.apresentacao.erroNome && 'border-rose-500'"
                 v-model="apresentacao.nome"
             />
         </Controller>
@@ -23,9 +24,13 @@
                 v-model="apresentacao.modalidade"
             >
                 <option value="" disabled>Selecionar</option>
-                <option value="0">Dança</option>
-                <option value="1">Música</option>
-                <option value="2">Outros</option>
+                <option
+                    v-for="modalidade in modalidades"
+                    :key="modalidade.cod"
+                    :value="modalidade.cod"
+                >
+                    {{ modalidade.nome }}
+                </option>
             </select>
         </Controller>
 
@@ -34,17 +39,21 @@
                 id="descricao"
                 required
                 class="input h-[30px]"
+                :class="
+                    cadastro.apresentacao.erroDescricao && 'border-rose-500'
+                "
                 placeholder="Vou começar a apresentação com..."
                 v-model="apresentacao.descricao"
                 @input="handleTextareaInput"
             ></textarea>
         </Controller>
 
-        <Controller label="Anexo complementar" for="anexo">
+        <Controller label="* Anexo complementar" for="anexo">
             <input
                 type="url"
                 id="anexo"
                 class="input"
+                required
                 v-model="apresentacao.anexo"
                 placeholder="https://youtu.be/xvFZjo5PgG0"
             />
@@ -70,15 +79,40 @@ const emit = defineEmits<Emits>();
 
 const cadastro = useCadastroStore();
 const apresentacao = computed(() => cadastro.apresentacao);
-
-const erro = ref<string | null>(null);
+const modalidades = computed(() => cadastro.modalidades);
 
 const handleTextareaInput = (e: Event) => {
     const target = e.target as HTMLTextAreaElement;
     target.style.height = `${target.scrollHeight + 2}px`;
 };
 
+const erro = ref<string | null>(null);
+
+const validar = () => {
+    erro.value = null;
+    cadastro.apresentacao.erroNome = false;
+    cadastro.apresentacao.erroDescricao = false;
+
+    const tamanhoNome = apresentacao.value.nome.trim().length;
+    const tamanhoDescricao = apresentacao.value.descricao.trim().length;
+
+    if (tamanhoNome < 8) {
+        erro.value = "O nome da apresentação deve ter pelo menos 8 caracteres.";
+        cadastro.apresentacao.erroNome = true;
+        return true;
+    } else if (tamanhoDescricao < 20) {
+        erro.value = "A descrição deve ter pelo menos 20 caracteres.";
+        cadastro.apresentacao.erroDescricao = true;
+        return true;
+    }
+
+    return false;
+};
+
 const handleSubmit = () => {
+    const erroValidacao = validar();
+    if (erroValidacao) return;
+
     emit("prox");
 };
 </script>
