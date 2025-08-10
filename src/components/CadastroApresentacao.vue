@@ -11,7 +11,7 @@
                 class="input"
                 required
                 placeholder="Dança da música X"
-                :class="cadastro.apresentacao.erroNome && 'border-rose-500'"
+                :aria-error="cadastro.apresentacao.erroNome"
                 v-model="apresentacao.nome"
             />
         </Controller>
@@ -39,9 +39,7 @@
                 id="descricao"
                 required
                 class="input h-[30px]"
-                :class="
-                    cadastro.apresentacao.erroDescricao && 'border-rose-500'
-                "
+                :aria-error="cadastro.apresentacao.erroDescricao"
                 placeholder="Vou começar a apresentação com..."
                 v-model="apresentacao.descricao"
                 @input="handleTextareaInput"
@@ -60,7 +58,7 @@
         </Controller>
 
         <button type="submit" class="btn w-full">Próximo</button>
-        <div v-if="erro" class="text-center text-rose-500 text-sm">
+        <div v-if="erro" class="text-center text-amber-500 text-sm">
             {{ erro }}
         </div>
     </form>

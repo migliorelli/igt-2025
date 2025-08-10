@@ -8,7 +8,7 @@
         <div class="flex flex-col gap-6 w-full">
             <div
                 v-for="(participante, index) in participantes"
-                :key="participante.id"
+                :key="index"
                 class="flex flex-col gap-4 items-center w-full"
             >
                 <div class="w-full flex justify-between items-center">
@@ -29,7 +29,7 @@
                         id="nome"
                         class="input"
                         required
-                        :class="participante.erroNome && 'border-rose-500'"
+                        :aria-error="participante.erroNome"
                         :value="participante.nome"
                         @input="
                             (e) =>
@@ -46,7 +46,7 @@
                         type="tel"
                         id="telefone"
                         class="input"
-                        :class="participante.erroTelefone && 'border-rose-500'"
+                        :aria-error="participante.erroTelefone"
                         required
                         :value="participante.telefone"
                         @input="
@@ -127,6 +127,7 @@ import Controller from "./Controller.vue";
 
 interface Emits {
     (e: "anterior"): void;
+
     (e: "prox"): void;
 }
 
@@ -188,6 +189,7 @@ const handleSubmit = async () => {
     const erro = validar();
     if (erro) return;
 
-    await cadastro.enviar();
+    const sucesso = await cadastro.enviar();
+    if (sucesso) emit("prox");
 };
 </script>

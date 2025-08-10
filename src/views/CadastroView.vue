@@ -2,7 +2,9 @@
     <Base>
         <Container class="flex flex-col gap-6 items-center">
             <Logo />
-            <template v-if="carregando"> Carregando...</template>
+            <template v-if="carregando">
+                <IconeCarregando />
+            </template>
             <template v-else-if="!carregando && erro">
                 <div class="text-center text-rose-500 text-sm">{{ erro }}</div>
             </template>
@@ -26,6 +28,7 @@ import CadastroApresentacao from "../components/CadastroApresentacao.vue";
 import CadastroParticipantes from "../components/CadastroParticipantes.vue";
 import CadastroSucesso from "../components/CadastroSucesso.vue";
 import Container from "../components/Container.vue";
+import IconeCarregando from "../components/IconeCarregando.vue";
 import Logo from "../components/Logo.vue";
 import useCadastroStore from "../store/cadastro-store.ts";
 

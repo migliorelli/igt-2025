@@ -1,17 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-    --color-primary: oklch(46.507% 0.18554 314.5);
-    --color-primary-50: oklch(94.011% 0.0321 328.96);
-    --color-primary-100: oklch(88.834% 0.06358 327.76);
-    --color-primary-200: oklch(78.474% 0.12613 325.3);
-    --color-primary-300: oklch(67.936% 0.18068 322.66);
-    --color-primary-400: oklch(57.669% 0.22389 318.72);
-    --color-primary-500: oklch(46.507% 0.18554 314.5);
-    --color-primary-600: oklch(39.581% 0.15594 310.18);
-    --color-primary-700: oklch(32.64% 0.12642 306.18);
-    --color-primary-800: oklch(26.051% 0.09591 301.23);
-    --color-primary-900: oklch(19.522% 0.0654 297.63);
+    --color-primary: oklch(48.955% 0.18118 24.187);
+    --color-primary-50: oklch(76.249% 0.10757 14.819);
+    --color-primary-100: oklch(72.699% 0.12629 16.368);
+    --color-primary-200: oklch(66.186% 0.16539 18.734);
+    --color-primary-300: oklch(60.594% 0.19883 21.683);
+    --color-primary-400: oklch(55.921% 0.20858 24.438);
+    --color-primary-500: oklch(48.955% 0.18118 24.187);
+    --color-primary-600: oklch(38.997% 0.14153 23.697);
+    --color-primary-700: oklch(28.298% 0.09629 22.223);
+    --color-primary-800: oklch(16.652% 0.04686 17.99);
+    --color-primary-900: oklch(0% 0 none);
+    --color-primary-950: oklch(0% 0 none);
 }
 
 :root {
@@ -32,6 +33,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    @apply bg-white dark:bg-neutral-900;
 }
 
 #app {
@@ -40,10 +42,25 @@ body {
     flex-direction: column;
 }
 
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fade-in-up 0.8s ease-out forwards;
+    opacity: 0;
+}
 
 @layer components {
     .btn {
-        @apply bg-primary-400 select-none hover:bg-primary-400/80 inline-flex h-10 items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap text-white transition-colors disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0;
+        @apply bg-primary-400 select-none hover:bg-primary-400/80 inline-flex h-10 items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap text-white transition-colors aria-disabled:pointer-events-none disabled:pointer-events-none disabled:cursor-not-allowed aria-disabled:cursor-not-allowed aria-disabled:opacity-50 disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0;
     }
 
     .btn-border {
@@ -51,6 +68,6 @@ body {
     }
 
     .input {
-        @apply focus:ring-primary-400/20 focus:border-primary-400 w-full rounded-lg border text-sm border-gray-300 dark:border-neutral-600 px-2 py-1 focus:ring-2 focus:outline-none;
+        @apply aria-error:border-amber-500 aria-error:border-2 focus:ring-primary-400/20 bg-white dark:bg-neutral-800 focus:border-primary-400 w-full rounded-lg border text-sm border-gray-300 dark:border-neutral-600 px-2 py-1 focus:ring-2 focus:outline-none;
     }
 }
