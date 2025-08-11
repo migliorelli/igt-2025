@@ -98,8 +98,8 @@ const validar = () => {
         erro.value = "O nome da apresentação deve ter pelo menos 8 caracteres.";
         cadastro.apresentacao.erroNome = true;
         return true;
-    } else if (tamanhoDescricao < 20) {
-        erro.value = "A descrição deve ter pelo menos 20 caracteres.";
+    } else if (tamanhoDescricao < 10) {
+        erro.value = "A descrição deve ter pelo menos 10 caracteres.";
         cadastro.apresentacao.erroDescricao = true;
         return true;
     }
