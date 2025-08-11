@@ -46,12 +46,11 @@
             ></textarea>
         </Controller>
 
-        <Controller label="* Anexo complementar" for="anexo">
+        <Controller label="Anexo complementar" for="anexo">
             <input
                 type="url"
                 id="anexo"
                 class="input"
-                required
                 v-model="apresentacao.anexo"
                 placeholder="https://youtu.be/xvFZjo5PgG0"
             />
