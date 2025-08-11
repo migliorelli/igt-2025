@@ -1,9 +1,9 @@
 <template>
     <Base>
         <Container class="flex flex-col gap-6 items-center">
-            <Logo />
+            <Logo class="animate-fade-in-up" />
             <template v-if="carregando">
-                <IconeCarregando />
+                <IconeCarregando class="animate-fade-in-up" />
             </template>
             <template v-else-if="!carregando && erro">
                 <div class="text-center text-rose-500 text-sm">{{ erro }}</div>
