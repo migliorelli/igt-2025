@@ -78,7 +78,7 @@
                             :key="turma.cod"
                             :value="turma.cod"
                         >
-                            {{ turma.nome }}
+                            {{ turma.curso.nome }} - {{ turma.nome }}
                         </option>
                     </select>
                 </Controller>
