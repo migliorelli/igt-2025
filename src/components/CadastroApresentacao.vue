@@ -87,7 +87,7 @@ const modalidades = computed(() => cadastro.modalidades);
 
 const handleTextareaInput = (e: Event) => {
     const target = e.target as HTMLTextAreaElement;
-    target.style.height = `${target.scrollHeight + 2}px`;
+    target.style.height = `${target.scrollHeight}px`;
 };
 
 const erro = ref<string | null>(null);
