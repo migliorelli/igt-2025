@@ -44,7 +44,9 @@
                 v-model="apresentacao.descricao"
                 @input="handleTextareaInput"
             ></textarea>
-            <div class="text-start text-sm text-gray-600">
+            <div
+                class="text-start text-sm text-neutral-600 dark:text-neutral-300"
+            >
                 Descreva sua apresentação, o tempo de duração estimado e
                 adicione os links necessários. Música: Adicione qual (ou quais)
                 música você irá performar, com seu reespectivo link.
