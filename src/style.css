@@ -60,7 +60,7 @@ body {
 
 @layer components {
     .btn {
-        @apply bg-primary-400 select-none hover:bg-primary-400/80 inline-flex h-10 items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap text-white transition-colors aria-disabled:pointer-events-none disabled:pointer-events-none disabled:cursor-not-allowed aria-disabled:cursor-not-allowed aria-disabled:opacity-50 disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0;
+        @apply bg-primary-400 select-none cursor-default hover:bg-primary-400/80 inline-flex h-10 items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap text-white transition-colors aria-disabled:pointer-events-none disabled:pointer-events-none disabled:cursor-not-allowed aria-disabled:cursor-not-allowed aria-disabled:opacity-50 disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0;
     }
 
     .btn-border {

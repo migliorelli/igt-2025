@@ -34,7 +34,7 @@
             </select>
         </Controller>
 
-        <Controller label="* Descrição simples da apresentação" for="descricao">
+        <Controller label="* Descrição da apresentação" for="descricao">
             <textarea
                 id="descricao"
                 required
@@ -44,6 +44,11 @@
                 v-model="apresentacao.descricao"
                 @input="handleTextareaInput"
             ></textarea>
+            <div class="text-start text-sm text-gray-600">
+                Descreva sua apresentação, o tempo de duração estimado e
+                adicione os links necessários. Música: Adicione qual (ou quais)
+                música você irá performar, com seu reespectivo link.
+            </div>
         </Controller>
 
         <Controller label="Anexo complementar" for="anexo">
@@ -97,8 +102,8 @@ const validar = () => {
         erro.value = "O nome da apresentação deve ter pelo menos 8 caracteres.";
         cadastro.apresentacao.erroNome = true;
         return true;
-    } else if (tamanhoDescricao < 10) {
-        erro.value = "A descrição deve ter pelo menos 10 caracteres.";
+    } else if (tamanhoDescricao < 20) {
+        erro.value = "A descrição deve ter pelo menos 20 caracteres.";
         cadastro.apresentacao.erroDescricao = true;
         return true;
     }
