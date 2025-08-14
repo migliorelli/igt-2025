@@ -47,7 +47,7 @@
             <div
                 class="text-start text-sm text-neutral-600 dark:text-neutral-300"
             >
-                Descreva sua apresentação, o tempo de duração estimado e
+                Descreva sua apresentação, o tempo de duração estimado <b>(máximo de cinco minutos)</b> e
                 adicione os links necessários. Música: Adicione qual (ou quais)
                 música você irá performar, com seu reespectivo link.
             </div>
