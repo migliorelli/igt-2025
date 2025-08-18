@@ -10,11 +10,11 @@
                 style="animation-delay: 0.3s"
             >
                 <p
-                    class="text-lg text-gray-600 dark:text-gray-300 mb-2 leading-relaxed"
+                    class="text-lg text-neutral-600 dark:text-neutral-300 mb-2 leading-relaxed"
                 >
                     Bem-vindo ao melhor show de talentos do IFES! 🌟
                 </p>
-                <p class="text-sm text-gray-500 dark:text-gray-400">
+                <p class="text-sm text-neutral-500 dark:text-neutral-400">
                     Se cadastre e mostre ao IFES o que você sabe fazer de
                     melhor!
                 </p>
@@ -39,6 +39,7 @@
                 />
             </div>
         </Container>
+        <TextoBaixo />
     </Base>
 </template>
 
@@ -47,4 +48,5 @@ import Base from "../components/Base.vue";
 import CardLink from "../components/CardLink.vue";
 import Container from "../components/Container.vue";
 import Logo from "../components/Logo.vue";
+import TextoBaixo from "../components/TextoBaixo.vue";
 </script>

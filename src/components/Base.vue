@@ -1,5 +1,5 @@
 <template>
-    <div class="flex-1 grid place-items-center p-8 min-h-screen">
+    <div class="flex-1 p-3 grid place-items-center min-h-screen">
         <slot></slot>
     </div>
 </template>

@@ -18,6 +18,7 @@
                 <CadastroSucesso v-if="fase === 2" />
             </template>
         </Container>
+        <TextoBaixo />
     </Base>
 </template>
 
@@ -30,6 +31,7 @@ import CadastroSucesso from "../components/CadastroSucesso.vue";
 import Container from "../components/Container.vue";
 import IconeCarregando from "../components/IconeCarregando.vue";
 import Logo from "../components/Logo.vue";
+import TextoBaixo from "../components/TextoBaixo.vue";
 import useCadastroStore from "../store/cadastro-store.ts";
 
 const cadastro = useCadastroStore();
