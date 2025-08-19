@@ -76,12 +76,17 @@ const useCadastroStore = defineStore("cadastro", {
         async enviar() {
             this.carregandoEnvio = true;
             this.erroEnvio = null;
+            
+            let anexo = this.apresentacao.anexo;
+            if (anexo.trim().length === 0) {
+                anexo = window.location.origin
+            }
 
             try {
                 await http.post("/grupo", {
                     descricao: this.apresentacao.descricao,
                     nome: this.apresentacao.nome,
-                    anexos: this.apresentacao.anexo,
+                    anexos: anexo,
                     modalidade: Number(this.apresentacao.modalidade),
                     candidatos: this.participantes.map((p) => ({
                         nome: p.nome,
