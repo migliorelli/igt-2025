@@ -34,8 +34,8 @@
                 <CardLink
                     titulo="Cadastro"
                     descricao="Cadastre-se e mostre seu talento"
-                    conteudo-botao="Quero me cadastrar!"
-                    href="/cadastro"
+                    conteudo-botao="Cadastros encerrados."
+                    desativado
                 />
             </div>
         </Container>
