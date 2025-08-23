@@ -4,5 +4,12 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/cadastro",
+      "destination": "/",
+      "permanent": true
+    }
   ]
 }
