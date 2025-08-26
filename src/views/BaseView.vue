@@ -27,8 +27,8 @@
                 <CardLink
                     titulo="Votação"
                     descricao="Vote nos seus candidatos favoritos"
-                    conteudo-botao="Em breve!"
-                    desativado
+                    conteudo-botao="Votar agora"
+                    href="/votar"
                 />
 
                 <CardLink

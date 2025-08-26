@@ -6,6 +6,7 @@ import {
 import BaseView from "../views/BaseView.vue";
 import CadastroView from "../views/CadastroView.vue";
 import NotFoundView from "../views/NotFoundView.vue";
+import VotarView from "../views/VotarView.vue";
 
 const routes: RouteRecordRaw[] = [
     {
@@ -23,11 +24,11 @@ const routes: RouteRecordRaw[] = [
         name: "cadastro",
         component: CadastroView,
     },
-    // {
-    //     path: "/votar",
-    //     name: "votar",
-    //     component: VotarView,
-    // },
+    {
+        path: "/votar",
+        name: "votar",
+        component: VotarView,
+    },
 ];
 
 const router = createRouter({
