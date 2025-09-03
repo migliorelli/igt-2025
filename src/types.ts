@@ -32,6 +32,7 @@ export interface Apresentacao {
     cod_modalidade: number;
     modalidade: Modalidade;
     anexos: string;
+    foto?: string;
 }
 
 export interface Grupo {
