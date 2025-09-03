@@ -9,7 +9,7 @@
                 grupoSelecionado !== grupo.apresentacao.cod,
         }"
     >
-        <div class="flex flex-col gap-3">
+        <div class="flex flex-col gap-3 h-full">
             <div class="flex items-start justify-between">
                 <div class="flex-1">
                     <h3 class="font-semibold text-lg">
@@ -47,7 +47,7 @@
                 </div>
             </div>
 
-            <div v-if="imagemUrl" class="w-full aspect-square">
+            <div v-if="imagemUrl" class="w-full aspect-square mt-auto">
                 <img
                     :src="imagemUrl"
                     alt="Imagem da apresentação"

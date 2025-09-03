@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-6 w-full">
+    <div class="flex flex-col gap-6 w-full relative" ref="parent">
         <h1 class="text-lg text-center">Votação - IGT 2025</h1>
 
         <div v-if="carregando" class="flex justify-center">
@@ -11,44 +11,22 @@
             <button @click="carregarGrupos" class="btn">Atualizar</button>
         </div>
 
-        <div v-else-if="!modalidadeAberta" class="text-center">
-            <p class="text-neutral-600 dark:text-neutral-300 mb-4">
-                Nenhuma modalidade está aberta para votação no momento.
-            </p>
+        <div
+            v-else-if="sucessoVoto && votou"
+            class="text-center text-green-600 dark:text-green-400 text-sm"
+        >
+            <p class="mb-4">{{ sucessoVoto }}</p>
             <button @click="carregarGrupos" class="btn">Atualizar</button>
         </div>
 
         <div v-else class="flex flex-col gap-6">
             <div class="text-center">
                 <h2 class="text-xl font-semibold mb-2">
-                    {{ modalidadeAberta.nome }}
+                    {{ modalidadeAberta?.nome }}
                 </h2>
                 <p class="text-sm text-neutral-600 dark:text-neutral-300">
                     Escolha sua apresentação favorita
                 </p>
-            </div>
-
-            <div v-if="grupoSelecionado" class="flex justify-center w-full">
-                <button
-                    @click="enviarVoto"
-                    :disabled="votando"
-                    v-if="!votou"
-                    class="btn px-8 py-3 text-lg w-full"
-                >
-                    {{ votando ? "Enviando voto..." : "Enviar Voto" }}
-                </button>
-            </div>
-
-            <div v-if="erroVoto" class="text-center text-rose-500 text-sm">
-                {{ erroVoto }}
-            </div>
-
-            <div
-                v-if="sucessoVoto"
-                class="text-center text-green-600 dark:text-green-400 text-sm"
-            >
-                <p class="mb-4">{{ sucessoVoto }}</p>
-                <button @click="carregarGrupos" class="btn">Atualizar</button>
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4" v-if="!votou">
@@ -61,21 +39,28 @@
                 />
             </div>
 
-            <div
-                v-if="grupos.length === 0"
-                class="text-center text-neutral-600 dark:text-neutral-300"
-            >
-                Nenhuma apresentação encontrada para esta modalidade.
-            </div>
-
-            <div v-if="grupoSelecionado" class="flex justify-center w-full">
+            <div class="flex flex-col gap-4 items-center">
                 <button
+                    v-if="!votou && grupoSelecionado"
                     @click="enviarVoto"
-                    :disabled="votando"
-                    class="btn px-8 py-3 text-lg w-full"
+                    :disabled="votando || !grupoSelecionado"
+                    class="btn px-8 py-3 h-14 text-lg w-full"
+                    ref="btn"
+                    :class="{
+                        relative: !floating,
+                        'fixed bottom-4 left-1/2 -translate-x-1/2': floating,
+                    }"
+                    :style="{ width: btnWidth }"
                 >
                     {{ votando ? "Enviando voto..." : "Enviar Voto" }}
                 </button>
+
+                <p
+                    v-if="erroVoto"
+                    class="text-center text-rose-500 text-sm mt-16"
+                >
+                    {{ erroVoto }}
+                </p>
             </div>
         </div>
     </div>
@@ -83,7 +68,7 @@
 
 <script setup lang="ts">
 import type { AxiosError } from "axios";
-import { onMounted, ref } from "vue";
+import { onMounted, onUnmounted, ref, useTemplateRef } from "vue";
 import http from "../lib/http";
 import type { Grupo, Modalidade } from "../types";
 import IconeCarregando from "./IconeCarregando.vue";
@@ -107,6 +92,10 @@ const modalidadeAberta = ref<Modalidade | null>(null);
 const grupoSelecionado = ref<number | null>(null);
 
 const carregarGrupos = async () => {
+    modalidadeAberta.value = null;
+    grupoSelecionado.value = null;
+    grupos.value = [];
+
     carregando.value = true;
     erro.value = null;
     votou.value = false;
@@ -172,5 +161,32 @@ const enviarVoto = async () => {
     }
 };
 
-onMounted(carregarGrupos);
+const floating = ref(true);
+const btn = useTemplateRef("btn");
+const parent = useTemplateRef("parent");
+const btnWidth = ref("auto");
+
+const handleScroll = () => {
+    if (!btn.value) return;
+
+    const floaterH = btn.value.offsetHeight;
+    const shouldStop =
+        window.scrollY + window.innerHeight <
+        document.body.scrollHeight - floaterH - 16;
+
+    floating.value = shouldStop;
+};
+
+onMounted(() => {
+    carregarGrupos();
+
+    window.addEventListener("scroll", handleScroll);
+
+    if (!parent.value) return;
+    btnWidth.value = `${parent.value.offsetWidth - 22}px`;
+});
+
+onUnmounted(() => {
+    window.removeEventListener("scroll", handleScroll);
+});
 </script>
